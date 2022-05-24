@@ -17,7 +17,7 @@ public class BoxingActivity extends AppCompatActivity {
     private EditText et_num, et_quantity;
     private CheckBox cb_no_auto;
     private Button bt_print;
-
+    // test commit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
