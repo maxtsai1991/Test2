@@ -9,15 +9,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.test2.R;
 
 public class BoxingActivity extends AppCompatActivity {
-    private ImageView iv_back_main, iv_to_history;
-    private EditText et_num, et_quantity;
-    private CheckBox cb_no_auto;
-    private Button bt_print;
-    // test commit
+    private ImageView iv_back_main, iv_to_history; // 返回主選單 , 進入裝箱作業-工作歷程(歷程記錄)
+    private EditText et_num, et_quantity; // 條碼資訊(號碼) , 數量
+    private CheckBox cb_no_auto; // 手動
+    private Button bt_print; // 列印
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +39,13 @@ public class BoxingActivity extends AppCompatActivity {
         // 數量
         et_quantity = findViewById(R.id.et_quantity);
         // 手動
-        cb_no_auto = findViewById(R.id.cb_no_auto);
+        cb_no_auto = (CheckBox) findViewById(R.id.cb_no_auto);
         // 列印
         bt_print = findViewById(R.id.bt_print);
     }
 
     private void handleElement() {
+
         // 跳轉到歷程記錄
         iv_to_history.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +55,14 @@ public class BoxingActivity extends AppCompatActivity {
             }
         });
 
+        // 手動 / 自動 Checkbox
+        cb_no_auto.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "被選取", Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 
