@@ -54,6 +54,16 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
+        android:id="@+id/tv_support_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_support_store"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_support_store" />
+
+    <TextView
         android:id="@+id/tv_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,6 +74,17 @@
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_support_store" />
+
+    <EditText
+        android:id="@+id/et_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toEndOf="@+id/tv_num"
+        app:layout_constraintTop_toTopOf="@+id/tv_num" />
 
     <TextView
         android:id="@+id/tv_quantity"
@@ -76,17 +97,6 @@
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_num" />
-
-    <EditText
-        android:id="@+id/et_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.072"
-        app:layout_constraintStart_toEndOf="@+id/tv_num"
-        app:layout_constraintTop_toTopOf="@+id/tv_num" />
 
     <EditText
         android:id="@+id/et_quantity"
@@ -103,6 +113,7 @@
         android:id="@+id/cb_no_auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:checked="true"
         android:text="手動"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/et_quantity"
@@ -117,4 +128,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

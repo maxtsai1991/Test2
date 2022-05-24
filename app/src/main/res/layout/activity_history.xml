@@ -51,7 +51,6 @@
         android:id="@+id/tv_support_store_history2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="帝商科技"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"

@@ -23,7 +23,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         findViews();
         handleElement();
-        handleCheckBoxes();
+
     }
 
 
@@ -48,8 +48,13 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
+
+        // 供應商
+        Intent intent1 = getIntent();
+        Bundle bundle = intent1.getExtras();
+        String SupportCompany = bundle.getString("SupportCompany");
+        tv_support_store_history2.setText(SupportCompany);
     }
 
-    private void handleCheckBoxes() {
-    }
+
 }
