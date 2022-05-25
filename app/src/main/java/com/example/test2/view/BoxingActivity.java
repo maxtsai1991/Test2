@@ -28,7 +28,6 @@ public class BoxingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boxing);
 
-
         findViews();
         handleElement();
     }
@@ -78,6 +77,18 @@ public class BoxingActivity extends AppCompatActivity {
 
         // 供應商
         tv_support_company.setText(SupportCompany);
+        // 條碼
+        String num1 = et_num.getEditableText().toString();
+        // 數量
+        String quantity = et_quantity.getEditableText().toString();
+
+        // 列印
+        bt_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(BoxingActivity.this, "條碼號碼 : " + et_num.getEditableText().toString() +" , " + " 數量 : " + et_quantity.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

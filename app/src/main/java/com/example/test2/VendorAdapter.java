@@ -65,20 +65,20 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
         holder.tvValue.setText(arrayList.get(position));
 
         /**
-         * 新增Code : RecyclerView的item的點擊事件
+         * RecyclerView的item的點擊事件
          */
         holder.tvValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), " " + holder.tvValue.getText(), Toast.LENGTH_SHORT).show();
                 /**
-                 * 新增Code : item點擊事件加彈窗
+                 * item點擊事件加彈窗
                  */
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.tvValue.getContext());
                 alertDialog.setTitle(" ");
-                alertDialog.setMessage("是否確認修改");
+                alertDialog.setMessage(" 是否確認修改 " + arrayList.get(position).toString() + " ?? ");
                 /**
-                 * 新增Code : item彈窗"確定按鈕"點擊事件
+                 * item彈窗"確定按鈕"點擊事件
                  */
                 alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
@@ -88,7 +88,7 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
                 });
 
                 /**
-                 * 新增Code : item彈窗"取消按鈕"點擊事件
+                 * item彈窗"取消按鈕"點擊事件
                  */
                 alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
                     @Override
@@ -105,14 +105,14 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
 
 
         /**
-         * 新增Code : RecyclerView的item往右滑出現垃圾桶選項
+         * RecyclerView的item往右滑出現垃圾桶選項
          */
         holder.ib_del.setOnClickListener((v -> {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.ib_del.getContext());
             alertDialog.setTitle(" "); // 設置標題
             alertDialog.setMessage("是否確認刪除"); // 設置內容
             /**
-             * 新增Code : 點選item跳出彈窗的確定選項(設置最右邊按鈕)
+             * 點選item跳出彈窗的確定選項(設置最右邊按鈕)
              */
             alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                 @Override
@@ -125,7 +125,7 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
                 }
             });
             /**
-             * 新增Code : 點選item跳出彈窗的取消選項(設置最左邊按鈕)
+             * 點選item跳出彈窗的取消選項(設置最左邊按鈕)
              */
             alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
                 @Override
