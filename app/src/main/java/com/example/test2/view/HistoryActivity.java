@@ -1,6 +1,7 @@
 package com.example.test2.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.test2.R;
 import com.example.test2.SupportStore;
 import com.example.test2.SupportStoreAdapter;
+import com.example.test2.VendorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +44,30 @@ public class HistoryActivity extends AppCompatActivity {
         supportStoreArrayList.add(supportStore3);
         supportStoreArrayList.add(supportStore4);
         supportStoreArrayList.add(supportStore5);
+        // 假資料2
+        ArrayList<String> arrayList = new ArrayList<>();//做陣列
+        for (int i =0;i<3;i++){
+            arrayList.add("A"+i);
+            arrayList.add("B"+i);
+            arrayList.add("C"+i);
+            arrayList.add("D"+i);
+        }
 
         // Adapter
-        SupportStoreAdapter supportStoreAdapter = new SupportStoreAdapter(supportStoreArrayList);
-        rv_info_list.setAdapter(supportStoreAdapter);
+//        SupportStoreAdapter supportStoreAdapter = new SupportStoreAdapter(supportStoreArrayList);
+//        rv_info_list.setAdapter(supportStoreAdapter);
+        VendorAdapter myAdapter = new VendorAdapter(arrayList);
+        rv_info_list.setAdapter(myAdapter);
+
+
         // RecyclerView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        rv_info_list.setLayoutManager(layoutManager);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        rv_info_list.setLayoutManager(layoutManager);
+
+        rv_info_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));//為RecyclerView每個item畫底線
+        rv_info_list.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
 
