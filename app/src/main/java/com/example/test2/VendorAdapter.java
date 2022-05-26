@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,25 +22,30 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
     private HistoryActivity historyActivity;
 
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-    private ArrayList<String> arrayList;
+    private ArrayList<Vendor> arrayList;
 
-    public VendorAdapter(ArrayList<String> arrayList){
+    public VendorAdapter(ArrayList<Vendor> arrayList){
         this.arrayList = arrayList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private View parent;
         private TextView tvValue;
+        TextView barcodeNum;
+        TextView vendorquantity;
 
         /**
          * 新增Code : 垃圾桶按鈕
          */
         private ImageButton ib_del;
         private SwipeRevealLayout swipeRevealLayout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvValue = itemView.findViewById(R.id.textView);
             parent = itemView;
+            barcodeNum = itemView.findViewById(R.id.tv_barcode_num);
+            vendorquantity = itemView.findViewById(R.id.tv_vendor_quantity);
 
             /**
              * 新增Code : item往右滑垃圾桶按鈕元件
@@ -53,30 +57,36 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // 取得item的lavout
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_supportstore_info,parent,false);
         return new ViewHolder(view);
     }
 
+    // item顯示要做的事情
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         viewBinderHelper.setOpenOnlyOne(true);//設置swipe只能有一個item被拉出
         viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(position));//綁定Layout
-        holder.tvValue.setText(arrayList.get(position));
+
+//        holder.tvValue.setText(arrayList.get(position));
+
+        Vendor vendor = arrayList.get(position); // 拿到list位置後
+        holder.barcodeNum.setText(vendor.getBarcodenum()); // 設置TextView
+        holder.vendorquantity.setText(vendor.getQuantity());
 
         /**
          * RecyclerView的item的點擊事件
          */
-        holder.tvValue.setOnClickListener(new View.OnClickListener() {
+        holder.barcodeNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), " " + holder.tvValue.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
                 /**
                  * item點擊事件加彈窗
                  */
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.tvValue.getContext());
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.barcodeNum.getContext());
                 alertDialog.setTitle(" ");
-                alertDialog.setMessage(" 是否確認修改 " + arrayList.get(position).toString() + " ?? ");
+                alertDialog.setMessage(" 是否確認修改 " + arrayList.get(position).getBarcodenum() + " ?? ");
                 /**
                  * item彈窗"確定按鈕"點擊事件
                  */
@@ -130,7 +140,6 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
             alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    holder.swipeRevealLayout.close(true); // 刪除動畫
                     Toast.makeText(v.getContext(), "已取消", Toast.LENGTH_SHORT).show();
                 }
             });

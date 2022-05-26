@@ -4,24 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.test2.R;
-import com.example.test2.SupportStore;
-import com.example.test2.SupportStoreAdapter;
+import com.example.test2.Vendor;
 import com.example.test2.VendorAdapter;
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class HistoryActivity extends AppCompatActivity {
     private View iv_return_boxing; // 返回到裝箱作業
-    private TextView tv_support_store_history2; // 供應商
+    private TextView tv_vendor_name_history; // 供應商
     private RecyclerView rv_info_list;
 
     @Override
@@ -30,58 +25,55 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         findViews();
-        handleElement();
+        handleElement(); // 元件處理
 
-        // 假資料
-        List<SupportStore> supportStoreArrayList = new ArrayList<>();
-        SupportStore supportStore = new SupportStore("123456","1");
-        SupportStore supportStore2 = new SupportStore("654321","2");
-        SupportStore supportStore3 = new SupportStore("678900","3");
-        SupportStore supportStore4 = new SupportStore("009876","4");
-        SupportStore supportStore5 = new SupportStore("345679","5");
-        supportStoreArrayList.add(supportStore);
-        supportStoreArrayList.add(supportStore2);
-        supportStoreArrayList.add(supportStore3);
-        supportStoreArrayList.add(supportStore4);
-        supportStoreArrayList.add(supportStore5);
-        // 假資料2
-        ArrayList<String> arrayList = new ArrayList<>();//做陣列
-        for (int i =0;i<3;i++){
-            arrayList.add("A"+i);
-            arrayList.add("B"+i);
-            arrayList.add("C"+i);
-            arrayList.add("D"+i);
+        /**
+         * 假資料
+         */
+        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
+        for (int i =111123456 ; i < 111123465 ; i++){
+            Vendor vendor = new Vendor("AA" + i + "6","1");
+            Vendor vendor2 = new Vendor("BB" + i + "5","2");
+            Vendor vendor3 = new Vendor("CC" + i + "4","3");
+            Vendor vendor4 = new Vendor("DD" + i + "3","4");
+            Vendor vendor5 = new Vendor("EE" + i + "2","5");
+            Vendor vendor6 = new Vendor("FF" + i + "1","6");
+            vendorArrayList.add(vendor);
+            vendorArrayList.add(vendor2);
+            vendorArrayList.add(vendor3);
+            vendorArrayList.add(vendor4);
+            vendorArrayList.add(vendor5);
+            vendorArrayList.add(vendor6);
         }
 
-        // Adapter
-//        SupportStoreAdapter supportStoreAdapter = new SupportStoreAdapter(supportStoreArrayList);
-//        rv_info_list.setAdapter(supportStoreAdapter);
-        VendorAdapter myAdapter = new VendorAdapter(arrayList);
+        /**
+         * Adapter
+         */
+        VendorAdapter myAdapter = new VendorAdapter(vendorArrayList);
         rv_info_list.setAdapter(myAdapter);
 
-
-        // RecyclerView
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        rv_info_list.setLayoutManager(layoutManager);
-
-        rv_info_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));//為RecyclerView每個item畫底線
+        /**
+         * RecyclerView
+         */
+        rv_info_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL)); // 為RecyclerView每個item畫底線
         rv_info_list.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
-
-
-
+        /**
+         * findView
+         */
     private void findViews() {
         // 返回到裝箱作業
         iv_return_boxing = findViewById(R.id.iv_return_boxing);
         // 供應商
-        tv_support_store_history2 = findViewById(R.id.tv_support_store_history2);
+        tv_vendor_name_history = findViewById(R.id.tv_vendor_name_history);
         // RecyclerView
         rv_info_list = findViewById(R.id.rv_info_list);
     }
 
+        /**
+         * 元件處理
+         */
     private void handleElement() {
         // 返回到裝箱作業
         iv_return_boxing.setOnClickListener(new View.OnClickListener() {
@@ -92,13 +84,13 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-
-        // 取得上一頁BoxingActivity供應商資料 (bundle)
+        /**
+         * 取得上一頁BoxingActivity供應商資料 (bundle) , 設置供應商名稱
+         */
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
-        String SupportCompany = bundle.getString("SupportCompany");
-        tv_support_store_history2.setText(SupportCompany);
+        String vendorname = bundle.getString("vendorname");
+        tv_vendor_name_history.setText(vendorname);
     }
-
 
 }

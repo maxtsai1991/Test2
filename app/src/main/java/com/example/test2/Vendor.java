@@ -1,10 +1,10 @@
 package com.example.test2;
 
-public class SupportStore {
+public class Vendor {
     private String barcodenum; // 條碼
     private String quantity; // 數量
 
-    public SupportStore(String barcodenum, String quantity) {
+    public Vendor(String barcodenum, String quantity) {
         this.barcodenum = barcodenum;
         this.quantity = quantity;
     }

@@ -17,11 +17,11 @@ import com.example.test2.R;
 
 public class BoxingActivity extends AppCompatActivity {
     private ImageView iv_back_main, iv_to_history; // 返回主選單 , 進入裝箱作業-工作歷程(歷程記錄)
-    private TextView tv_support_company; // 供應商
-    private EditText et_num, et_quantity; // 條碼資訊(號碼) , 數量
-    private CheckBox cb_no_auto; // 手動
-    private Button bt_print; // 列印
-    private String SupportCompany = "帝商科技2022";
+    private TextView tv_vendor_boxing;      // 供應商名稱
+    private EditText et_num, et_quantity;   // 條碼資訊(號碼) , 數量
+    private CheckBox cb_no_auto;            // CheckBox(手動/自動)
+    private Button bt_print;                // 列印
+    private String vendorName = "2022帝商科技";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,9 @@ public class BoxingActivity extends AppCompatActivity {
         handleElement();
     }
 
+    /**
+     * findViews
+     */
     private void findViews() {
         // 返回主選單
         iv_back_main = findViewById(R.id.iv_back_main);
@@ -46,24 +49,31 @@ public class BoxingActivity extends AppCompatActivity {
         // 列印
         bt_print = findViewById(R.id.bt_print);
         // 供應商
-        tv_support_company = findViewById(R.id.tv_support_company);
+        tv_vendor_boxing = findViewById(R.id.tv_vendor_boxing);
     }
 
+    /**
+     * 元件處理
+     */
     private void handleElement() {
 
-        // 跳轉到歷程記錄
+        /**
+         * 跳轉下一頁(歷程記錄)
+         */
         iv_to_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("SupportCompany",SupportCompany);
+                bundle.putString("vendorname", vendorName);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
 
-        // Checkbox(手/自) 預設為手動(isChecked = true)
+        /**
+         * Checkbox(手動/自動) 預設為自動(isChecked = false)
+         */
         cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -75,21 +85,22 @@ public class BoxingActivity extends AppCompatActivity {
             }
         });
 
-        // 供應商
-        tv_support_company.setText(SupportCompany);
-        // 條碼
-        String num1 = et_num.getEditableText().toString();
-        // 數量
-        String quantity = et_quantity.getEditableText().toString();
-
-        // 列印
+        /**
+         * 列印 : 暫時先取得三種資料 : 供應商 號碼 數量
+         */
         bt_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(BoxingActivity.this, "條碼號碼 : " + et_num.getEditableText().toString() +" , " + " 數量 : " + et_quantity.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(BoxingActivity.this, "供應商 : " + vendorName + " , "
+                        + " 條碼號碼 : " + et_num.getEditableText().toString() +" , "
+                        + " 數量 : " + et_quantity.getEditableText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
+        /**
+         * 供應商設定
+         */
+        tv_vendor_boxing.setText(vendorName);
     }
 
 }
