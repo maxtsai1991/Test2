@@ -1,22 +1,42 @@
 package com.example.test2.view;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.test2.R;
 import com.example.test2.Vendor;
-import com.example.test2.VendorAdapter;
 import java.util.ArrayList;
 
 
 public class HistoryActivity extends AppCompatActivity {
-    private View iv_return_boxing; // 返回到裝箱作業
-    private TextView tv_vendor_name_history; // 供應商
+    /**
+     * 返回到裝箱作業
+     */
+    private View iv_return_boxing;
+    /**
+     * 供應商
+     */
+    private TextView tv_vendor_name_history;
+    /**
+     * Recyclerview id
+     */
     private RecyclerView rv_info_list;
 
     @Override
@@ -25,7 +45,10 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         findViews();
-        handleElement(); // 元件處理
+        /**
+         * 元件處理
+         */
+        handleElement();
 
         /**
          * 假資料
@@ -59,23 +82,16 @@ public class HistoryActivity extends AppCompatActivity {
         rv_info_list.setLayoutManager(new LinearLayoutManager(this));
     }
 
-        /**
-         * findView
-         */
     private void findViews() {
-        // 返回到裝箱作業
         iv_return_boxing = findViewById(R.id.iv_return_boxing);
-        // 供應商
         tv_vendor_name_history = findViewById(R.id.tv_vendor_name_history);
-        // RecyclerView
         rv_info_list = findViewById(R.id.rv_info_list);
     }
 
-        /**
-         * 元件處理
-         */
     private void handleElement() {
-        // 返回到裝箱作業
+        /**
+         * 返回到裝箱作業
+         */
         iv_return_boxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +106,178 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
         String vendorname = bundle.getString("vendorname");
+        String barcodenum = bundle.getString("barcodenum");
+        String quantity = bundle.getString("quantity");
         tv_vendor_name_history.setText(vendorname);
+        Log.d("TAG", "barcodenum & quantity: " + barcodenum + "\n" + quantity);
+    }
+
+    /**
+     * VendorAdapter
+     */
+    public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder>{
+        private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+        private ArrayList<Vendor> arrayList; // 假資料
+
+        public VendorAdapter(ArrayList<Vendor> arrayList){
+            this.arrayList = arrayList;
+        }
+
+        /**
+         * ViewHolder
+         */
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            private View parent;
+            /**
+             * 垃圾桶icon
+             */
+            private ImageButton ib_del;
+            /**
+             * RecyclerView Item滑動Layout
+             */
+            private SwipeRevealLayout swipeRevealLayout;
+            /**
+             * 號碼TV
+             */
+            TextView barcodeNum;
+            /**
+             * 數量TV
+             */
+            TextView vendorquantity;
+
+            /**
+             * ViewHolder建構子, 放FVB
+             */
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                parent = itemView;
+                barcodeNum = itemView.findViewById(R.id.tv_barcode_num);
+                vendorquantity = itemView.findViewById(R.id.tv_vendor_quantity);
+                ib_del = itemView.findViewById(R.id.ib_del);
+                swipeRevealLayout = itemView.findViewById(R.id.swipeLayout);
+            }
+        }
+
+        /**
+         * onCreateViewHolder
+         */
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // 取得item的lavout
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vendor_history_info,parent,false);
+            return new ViewHolder(view);
+        }
+
+        /**
+         * onBindViewHolder : item顯示要做的事情
+         */
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            /**
+             * 設置swipe只能有一個item被拉出
+             */
+            viewBinderHelper.setOpenOnlyOne(true);
+            /**
+             * 綁定滑動Layout
+             */
+            viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(position));
+            /**
+             * 取得假資料List Item位置
+             */
+            Vendor vendor = arrayList.get(position);
+            /**
+             * 綁定號碼
+             */
+            holder.barcodeNum.setText(vendor.getBarcodenum());
+            /**
+             * 綁定數量
+             */
+            holder.vendorquantity.setText(vendor.getQuantity());
+
+            /**
+             * RecyclerView的item的點擊事件
+             */
+            holder.barcodeNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
+                    /**
+                     * AlertDialog
+                     */
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.barcodeNum.getContext());
+                    alertDialog.setTitle(" ");
+                    alertDialog.setMessage(" 是否確認修改 " + arrayList.get(position).getBarcodenum() + " ?? ");
+                    /**
+                     * AlertDialog "確定按鈕"點擊事件
+                     */
+                    alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(v.getContext(), "已修改數量", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    /**
+                     * AlertDialog"取消按鈕"點擊事件
+                     */
+                    alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(v.getContext(), "取消修改", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    alertDialog.setCancelable(false); // 禁用返回 , false : 點選彈窗以外不會有反應 , true :  點選彈窗以外會取消彈窗
+                    alertDialog.show(); // 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
+                }
+            });
+
+
+            /**
+             * RecyclerView的item往右滑出現垃圾桶選項
+             */
+            holder.ib_del.setOnClickListener((v -> {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.ib_del.getContext());
+                alertDialog.setTitle(" "); // 設置標題
+                alertDialog.setMessage("是否確認刪除"); // 設置內容
+
+                /**
+                 * 點選item跳出彈窗的確定選項(設置最右邊按鈕)
+                 */
+                alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        holder.swipeRevealLayout.close(true); // 刪除動畫
+                        arrayList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position,arrayList.size());
+                        Toast.makeText(v.getContext(), "已刪除", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                /**
+                 * 點選item跳出彈窗的取消選項(設置最左邊按鈕)
+                 */
+                alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(v.getContext(), "已取消", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                notifyDataSetChanged();
+                alertDialog.setCancelable(false);
+                alertDialog.show();
+            }));
+        }
+
+        /**
+         * getItemCount
+         */
+        @Override
+        public int getItemCount() {
+            return arrayList.size();
+        }
     }
 
 }

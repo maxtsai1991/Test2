@@ -16,18 +16,32 @@ import android.widget.Toast;
 import com.example.test2.R;
 
 public class BoxingActivity extends AppCompatActivity {
-    private ImageView iv_back_main, iv_to_history; // 返回主選單 , 進入裝箱作業-工作歷程(歷程記錄)
-    private TextView tv_vendor_boxing;      // 供應商名稱
-    private EditText et_num, et_quantity;   // 條碼資訊(號碼) , 數量
-    private CheckBox cb_no_auto;            // CheckBox(手動/自動)
-    private Button bt_print;                // 列印
+    /**
+     * 返回主選單 , 進入裝箱作業-工作歷程(歷程記錄)
+     */
+    private ImageView iv_back_main, iv_to_history;
+    /**
+     * 供應商名稱
+     */
+    private TextView tv_vendor_boxing;
+    /**
+     * 條碼資訊(號碼) , 數量
+     */
+    private EditText et_num, et_quantity;
+    /**
+     * CheckBox(手動/自動)
+     */
+    private CheckBox cb_no_auto;
+    /**
+     * 列印
+     */
+    private Button bt_print;
     private String vendorName = "2022帝商科技";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boxing);
-
         findViews();
         handleElement();
     }
@@ -58,7 +72,7 @@ public class BoxingActivity extends AppCompatActivity {
     private void handleElement() {
 
         /**
-         * 跳轉下一頁(歷程記錄)
+         * 跳轉下一頁(歷程記錄) , Bundle供應商名稱
          */
         iv_to_history.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +80,8 @@ public class BoxingActivity extends AppCompatActivity {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
+                bundle.putString("barcodenum", et_num.getEditableText().toString());
+                bundle.putString("quantity", et_quantity.getEditableText().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -78,9 +94,9 @@ public class BoxingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    Toast.makeText(BoxingActivity.this, " 已開啟手動 ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(BoxingActivity.this, " 已開啟自動 ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -91,14 +107,14 @@ public class BoxingActivity extends AppCompatActivity {
         bt_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(BoxingActivity.this, "供應商 : " + vendorName + " , "
-                        + " 條碼號碼 : " + et_num.getEditableText().toString() +" , "
+                Toast.makeText(BoxingActivity.this, "供應商 : " + vendorName + "\n"
+                        + " 條碼號碼 : " + et_num.getEditableText().toString()  + "\n"
                         + " 數量 : " + et_quantity.getEditableText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
         /**
-         * 供應商設定
+         * 供應商設定文字
          */
         tv_vendor_boxing.setText(vendorName);
     }
