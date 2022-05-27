@@ -39,6 +39,14 @@ public class HistoryActivity extends AppCompatActivity {
      */
     private RecyclerView rv_info_list;
 
+    /**
+     * 上一頁Bundle來的資料
+     * 供應商 , 號碼 , 數量
+     */
+    private String vendorName;
+    private String editableNumStr;
+    private String editableQuantityStr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,23 +59,28 @@ public class HistoryActivity extends AppCompatActivity {
         handleElement();
 
         /**
-         * 假資料
+         * Bundle來的資料
          */
         ArrayList<Vendor> vendorArrayList = new ArrayList<>();
-        for (int i =111123456 ; i < 111123465 ; i++){
-            Vendor vendor = new Vendor("AA" + i + "6","1");
-            Vendor vendor2 = new Vendor("BB" + i + "5","2");
-            Vendor vendor3 = new Vendor("CC" + i + "4","3");
-            Vendor vendor4 = new Vendor("DD" + i + "3","4");
-            Vendor vendor5 = new Vendor("EE" + i + "2","5");
-            Vendor vendor6 = new Vendor("FF" + i + "1","6");
-            vendorArrayList.add(vendor);
-            vendorArrayList.add(vendor2);
-            vendorArrayList.add(vendor3);
-            vendorArrayList.add(vendor4);
-            vendorArrayList.add(vendor5);
-            vendorArrayList.add(vendor6);
-        }
+        Vendor vendor = new Vendor(editableNumStr , editableQuantityStr);
+        vendorArrayList.add(vendor);
+
+//        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
+//        for (int i =111123456 ; i < 111123465 ; i++){
+//            Vendor vendor = new Vendor("AA" + i + "6","1");
+//            Vendor vendor2 = new Vendor("BB" + i + "5","2");
+//            Vendor vendor3 = new Vendor("CC" + i + "4","3");
+//            Vendor vendor4 = new Vendor("DD" + i + "3","4");
+//            Vendor vendor5 = new Vendor("EE" + i + "2","5");
+//            Vendor vendor6 = new Vendor("FF" + i + "1","6");
+//            vendorArrayList.add(vendor);
+//            vendorArrayList.add(vendor2);
+//            vendorArrayList.add(vendor3);
+//            vendorArrayList.add(vendor4);
+//            vendorArrayList.add(vendor5);
+//            vendorArrayList.add(vendor6);
+//    }
+
 
         /**
          * Adapter
@@ -105,11 +118,11 @@ public class HistoryActivity extends AppCompatActivity {
          */
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
-        String vendorname = bundle.getString("vendorname");
-        String barcodenum = bundle.getString("barcodenum");
-        String quantity = bundle.getString("quantity");
-        tv_vendor_name_history.setText(vendorname);
-        Log.d("TAG", "barcodenum & quantity: " + barcodenum + "\n" + quantity);
+        vendorName = bundle.getString("vendorname");
+        editableNumStr = bundle.getString("editableNumStr");
+        editableQuantityStr = bundle.getString("editableQuantityStr");
+        tv_vendor_name_history.setText(vendorName);
+//        Log.d("TAG", " 號碼: " + editableNumStr + "\n數量: " + editableQuantityStr); // Debug用
     }
 
     /**

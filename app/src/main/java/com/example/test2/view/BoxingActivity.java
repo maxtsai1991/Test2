@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +38,10 @@ public class BoxingActivity extends AppCompatActivity {
      * 列印
      */
     private Button bt_print;
-    private String vendorName = "2022帝商科技";
+    private String vendorName = "帝商";
+
+    private String editableNumStr;
+    private String editableQuantityStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +85,8 @@ public class BoxingActivity extends AppCompatActivity {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
-                bundle.putString("barcodenum", et_num.getEditableText().toString());
-                bundle.putString("quantity", et_quantity.getEditableText().toString());
+                bundle.putString("editableNumStr", editableNumStr);
+                bundle.putString("editableQuantityStr", editableQuantityStr);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -117,6 +122,50 @@ public class BoxingActivity extends AppCompatActivity {
          * 供應商設定文字
          */
         tv_vendor_boxing.setText(vendorName);
+
+        /**
+         *  et_num EditText號碼監聽事件
+         */
+        et_num.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editableNum) {
+                editableNumStr = editableNum.toString().trim();
+
+            }
+        });
+
+        /**
+         *  et_quantity EditText數量監聽事件
+         */
+        et_quantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editableQuantity) {
+                editableQuantityStr = editableQuantity.toString().trim();
+                Toast.makeText(BoxingActivity.this, "號碼 : " + editableNumStr + " ,數量 : " + editableQuantityStr.toString().trim(), Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
     }
 
 }
