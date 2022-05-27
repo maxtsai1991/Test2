@@ -3,6 +3,7 @@ package com.example.test2.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +42,20 @@ public class HistoryActivity extends AppCompatActivity {
     private RecyclerView rv_info_list;
 
     /**
-     * 上一頁Bundle來的資料
-     * 供應商 , 號碼 , 數量
+     * 供應商 上一頁Bundle來的資料
+     *
      */
     private String vendorName;
+    /**
+     * 號碼 上一頁Bundle來的資料
+     */
     private String editableNumStr;
+    /**
+     * 數量 上一頁Bundle來的資料
+     */
     private String editableQuantityStr;
+
+    private ArrayList<Vendor> vendorArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +71,10 @@ public class HistoryActivity extends AppCompatActivity {
         /**
          * Bundle來的資料
          */
-        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
-        Vendor vendor = new Vendor(editableNumStr , editableQuantityStr);
+        vendorArrayList = new ArrayList<>();
+        Vendor vendor = new Vendor();
+        vendor.setBarcodenum(editableNumStr);
+        vendor.setQuantity(editableQuantityStr);
         vendorArrayList.add(vendor);
 
 //        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
@@ -81,12 +93,11 @@ public class HistoryActivity extends AppCompatActivity {
 //            vendorArrayList.add(vendor6);
 //    }
 
-
         /**
          * Adapter
          */
-        VendorAdapter myAdapter = new VendorAdapter(vendorArrayList);
-        rv_info_list.setAdapter(myAdapter);
+        VendorAdapter vendorAdapter = new VendorAdapter(vendorArrayList);
+        rv_info_list.setAdapter(vendorAdapter);
 
         /**
          * RecyclerView
@@ -130,10 +141,10 @@ public class HistoryActivity extends AppCompatActivity {
      */
     public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder>{
         private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-        private ArrayList<Vendor> arrayList; // 假資料
+        private ArrayList<Vendor> vendorArrayList; // 假資料
 
-        public VendorAdapter(ArrayList<Vendor> arrayList){
-            this.arrayList = arrayList;
+        public VendorAdapter(ArrayList<Vendor> vendorArrayList){
+            this.vendorArrayList = vendorArrayList;
         }
 
         /**
@@ -157,17 +168,22 @@ public class HistoryActivity extends AppCompatActivity {
              * 數量TV
              */
             TextView vendorquantity;
+            /**
+             * ItemLayout
+             */
+            private ConstraintLayout cl_itemView;
 
             /**
              * ViewHolder建構子, 放FVB
              */
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                parent = itemView;
+//                parent = itemView;
                 barcodeNum = itemView.findViewById(R.id.tv_barcode_num);
                 vendorquantity = itemView.findViewById(R.id.tv_vendor_quantity);
                 ib_del = itemView.findViewById(R.id.ib_del);
                 swipeRevealLayout = itemView.findViewById(R.id.swipeLayout);
+                cl_itemView = itemView.findViewById(R.id.cl_itemView);
             }
         }
 
@@ -191,13 +207,14 @@ public class HistoryActivity extends AppCompatActivity {
              */
             viewBinderHelper.setOpenOnlyOne(true);
             /**
-             * 綁定滑動Layout
+             * 綁定滑動 SwipeLayout
              */
             viewBinderHelper.bind(holder.swipeRevealLayout, String.valueOf(position));
+
             /**
-             * 取得假資料List Item位置
+             * 取得資料List Item位置
              */
-            Vendor vendor = arrayList.get(position);
+            Vendor vendor = vendorArrayList.get(position);
             /**
              * 綁定號碼
              */
@@ -210,18 +227,18 @@ public class HistoryActivity extends AppCompatActivity {
             /**
              * RecyclerView的item的點擊事件
              */
-            holder.barcodeNum.setOnClickListener(new View.OnClickListener() {
+            holder.cl_itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
                     /**
                      * AlertDialog
                      */
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.barcodeNum.getContext());
                     alertDialog.setTitle(" ");
-                    alertDialog.setMessage(" 是否確認修改 " + arrayList.get(position).getBarcodenum() + " ?? ");
+                    alertDialog.setMessage(" 是否確認修改 " + vendorArrayList.get(position).getBarcodenum() + " ?? ");
                     /**
-                     * AlertDialog "確定按鈕"點擊事件
+                     * AlertDialog "確定"按鈕 點擊事件
                      */
                     alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                         @Override
@@ -231,7 +248,7 @@ public class HistoryActivity extends AppCompatActivity {
                     });
 
                     /**
-                     * AlertDialog"取消按鈕"點擊事件
+                     * AlertDialog"取消"按鈕 點擊事件
                      */
                     alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -240,8 +257,14 @@ public class HistoryActivity extends AppCompatActivity {
                         }
                     });
 
-                    alertDialog.setCancelable(false); // 禁用返回 , false : 點選彈窗以外不會有反應 , true :  點選彈窗以外會取消彈窗
-                    alertDialog.show(); // 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
+                    /**
+                     * 禁用返回 , false : 點選彈窗以外不會有反應 , true :  點選彈窗以外會取消彈窗
+                     */
+                    alertDialog.setCancelable(false);
+                    /**
+                     * 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
+                     */
+                    alertDialog.show();
                 }
             });
 
@@ -261,9 +284,9 @@ public class HistoryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         holder.swipeRevealLayout.close(true); // 刪除動畫
-                        arrayList.remove(position);
+                        vendorArrayList.remove(position);
                         notifyItemRemoved(position);
-                        notifyItemRangeChanged(position,arrayList.size());
+                        notifyItemRangeChanged(position,vendorArrayList.size());
                         Toast.makeText(v.getContext(), "已刪除", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -289,7 +312,7 @@ public class HistoryActivity extends AppCompatActivity {
          */
         @Override
         public int getItemCount() {
-            return arrayList.size();
+            return vendorArrayList.size();
         }
     }
 

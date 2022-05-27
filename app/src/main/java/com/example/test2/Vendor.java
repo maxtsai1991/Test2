@@ -9,6 +9,9 @@ public class Vendor {
         this.quantity = quantity;
     }
 
+    public Vendor() {
+    }
+
     public String getBarcodenum() {
         return barcodenum;
     }
