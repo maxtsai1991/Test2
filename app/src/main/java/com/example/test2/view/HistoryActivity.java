@@ -54,7 +54,6 @@ public class HistoryActivity extends AppCompatActivity {
      * 數量 上一頁Bundle來的資料
      */
     private String editableQuantityStr;
-
     private ArrayList<Vendor> vendorArrayList;
 
     @Override
@@ -71,11 +70,11 @@ public class HistoryActivity extends AppCompatActivity {
         /**
          * Bundle來的資料
          */
-        vendorArrayList = new ArrayList<>();
-        Vendor vendor = new Vendor();
-        vendor.setBarcodenum(editableNumStr);
-        vendor.setQuantity(editableQuantityStr);
-        vendorArrayList.add(vendor);
+//        vendorArrayList = new ArrayList<>();
+//        Vendor vendor = new Vendor();
+//        vendor.setBarcodenum(editableNumStr);
+//        vendor.setQuantity(editableQuantityStr);
+//        vendorArrayList.add(vendor);
 
 //        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
 //        for (int i =111123456 ; i < 111123465 ; i++){
@@ -129,11 +128,12 @@ public class HistoryActivity extends AppCompatActivity {
          */
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
+
+        ArrayList arrayList = bundle.getParcelableArrayList("vendorArrayList");
+        vendorArrayList = (ArrayList<Vendor>) arrayList;
+
         vendorName = bundle.getString("vendorname");
-        editableNumStr = bundle.getString("editableNumStr");
-        editableQuantityStr = bundle.getString("editableQuantityStr");
         tv_vendor_name_history.setText(vendorName);
-//        Log.d("TAG", " 號碼: " + editableNumStr + "\n數量: " + editableQuantityStr); // Debug用
     }
 
     /**

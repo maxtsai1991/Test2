@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.test2.R;
+import com.example.test2.Vendor;
+
+import java.util.ArrayList;
 
 public class BoxingActivity extends AppCompatActivity {
     /**
@@ -40,8 +45,14 @@ public class BoxingActivity extends AppCompatActivity {
     private Button bt_print;
     private String vendorName = "帝商";
 
+    private ArrayList<Vendor> vendorArrayList;
+    private Vendor vendor;
+
     private String editableNumStr;
     private String editableQuantityStr;
+
+    public BoxingActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,9 @@ public class BoxingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_boxing);
         findViews();
         handleElement();
+
+        vendorArrayList = new ArrayList<>();
+        vendor = new Vendor();
     }
 
     /**
@@ -85,8 +99,9 @@ public class BoxingActivity extends AppCompatActivity {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
-                bundle.putString("editableNumStr", editableNumStr);
-                bundle.putString("editableQuantityStr", editableQuantityStr);
+                bundle.putParcelableArrayList("vendorArrayList",vendorArrayList);
+//                bundle.putString("editableNumStr", editableNumStr);
+//                bundle.putString("editableQuantityStr", editableQuantityStr);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -126,44 +141,36 @@ public class BoxingActivity extends AppCompatActivity {
         /**
          *  et_num EditText號碼監聽事件
          */
-        et_num.addTextChangedListener(new TextWatcher() {
+        et_num.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editableNum) {
-                editableNumStr = editableNum.toString().trim();
-
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                    editableNumStr = et_num.getText().toString();
+                    vendor = new Vendor();
+//                    vendor.setBarcodenum(editableNumStr);
+//                    vendorArrayList.add(vendor);
+                    return true;
+                }
+                return false;
             }
         });
 
         /**
          *  et_quantity EditText數量監聽事件
          */
-        et_quantity.addTextChangedListener(new TextWatcher() {
+        et_quantity.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editableQuantity) {
-                editableQuantityStr = editableQuantity.toString().trim();
-                Toast.makeText(BoxingActivity.this, "號碼 : " + editableNumStr + " ,數量 : " + editableQuantityStr.toString().trim(), Toast.LENGTH_SHORT).show();
-
-
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                    editableQuantityStr = et_quantity.getText().toString();
+                    vendor = new Vendor();
+                    vendor.setBarcodenum(editableNumStr);
+                    vendor.setQuantity(editableQuantityStr);
+                    vendorArrayList.add(vendor);
+                    Toast.makeText(BoxingActivity.this, "vendorArrayList : " + vendorArrayList, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
             }
         });
     }

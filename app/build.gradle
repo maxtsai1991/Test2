@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.regalscan:RegalUtilityLIB:2.8.4'
+//    implementation 'com.regalscan:RegalUtilityLIB:2.8.4'
 
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
