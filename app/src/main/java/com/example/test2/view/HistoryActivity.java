@@ -118,7 +118,7 @@ public class HistoryActivity extends AppCompatActivity {
      */
     public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder>{
         private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-        private ArrayList<Vendor> vendorArrayList; // 假資料
+        private ArrayList<Vendor> vendorArrayList; // 資料
 
         public VendorAdapter(ArrayList<Vendor> vendorArrayList){
             this.vendorArrayList = vendorArrayList;
@@ -207,45 +207,64 @@ public class HistoryActivity extends AppCompatActivity {
             holder.cl_itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-//                    Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
+                    // new AlertDialog
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(HistoryActivity.this);
+                    View view = getLayoutInflater().inflate(R.layout.custom_dialog,null);
+                    alertDialog.setView(view);
+                    // 元件綁定
+                    TextView tvOK = view.findViewById(R.id.tv_ok_dialog);
+                    TextView tvCancel = view.findViewById(R.id.tv_cancel_dialog);
+                    TextView tvMessage = view.findViewById(R.id.tv_message_dialog);
+                    EditText etMessage = view.findViewById(R.id.et_quantity_dialog1);
+                    // AlertDialog訊息
+                    tvMessage.setText(" 是否確認修改 " + vendorArrayList.get(position).getBarcodenum() + " ?? ");
+                    // AlertDialog EditText顯示數量
+                    etMessage.setText(vendorArrayList.get(position).getQuantity());
+                    // 創建AlertDialog
+                    AlertDialog dialog = alertDialog.create();
+                    // 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
+                    dialog.show();
+
                     /**
-                     * AlertDialog
+                     * 客製化Dialog "確認" 點擊事件
                      */
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(holder.barcodeNum.getContext());
-                    alertDialog.setTitle(" ");
-                    alertDialog.setMessage(" 是否確認修改 " + vendorArrayList.get(position).getBarcodenum() + " ?? ");
-                    /**
-                     * AlertDialog "確定"按鈕 點擊事件
-                     */
-                    alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    tvOK.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
+                            // AlertDialog EditText顯示數量
+//                            etMessage.setText(vendorArrayList.get(position).getQuantity());
+                            // EditText數量轉字串
+//                            String modifyET = etMessage.toString();
+                            // 將數量字串設定回vendorArrayList
+//                            vendorArrayList.get(position).setQuantity(etMessage.toString());
+                            // 刷新 ?
+                            notifyDataSetChanged();
+//                            notifyItemChanged(position);
 
-                            String quantity = vendorArrayList.get(position).getQuantity();
-                            vendorArrayList.get(position).setQuantity(quantity);
-
-                            Toast.makeText(v.getContext(), "已修改數量", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HistoryActivity.this, "已修改~", Toast.LENGTH_SHORT).show();
+                        // 客製化Dialog才會才會消失
+                        dialog.dismiss();
                         }
                     });
 
                     /**
-                     * AlertDialog"取消"按鈕 點擊事件
+                     * 客製化Dialog "取消" 點擊事件
                      */
-                    alertDialog.setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    tvCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(v.getContext(), "取消修改", Toast.LENGTH_SHORT).show();
+                        public void onClick(View v) {
+                            Toast.makeText(HistoryActivity.this, "已取消~", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
                     });
+
+                    notifyDataSetChanged();
 
                     /**
                      * 禁用返回 , false : 點選彈窗以外不會有反應 , true :  點選彈窗以外會取消彈窗
                      */
-                    alertDialog.setCancelable(false);
-                    /**
-                     * 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
-                     */
-                    alertDialog.show();
+                    dialog.setCancelable(false);
+                    dialog.show();
                     /**
                      * 長按點擊事件回傳 true / false :
                      * 如元件有設定一般和長按兩種點擊事件
@@ -254,7 +273,6 @@ public class HistoryActivity extends AppCompatActivity {
                     return false;
                 }
             });
-
 
             /**
              * RecyclerView的item往右滑出現垃圾桶選項
