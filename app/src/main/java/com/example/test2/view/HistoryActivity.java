@@ -220,8 +220,6 @@ public class HistoryActivity extends AppCompatActivity {
                     tvMessage.setText(" 是否確認修改 " + vendorArrayList.get(position).getBarcodenum() + " ?? ");
                     // AlertDialog EditText顯示數量
                     etMessage.setText(vendorArrayList.get(position).getQuantity());
-                    // EditText數量轉字串
-                    String modifyET = etMessage.toString();
                     // 創建AlertDialog
                     AlertDialog dialog = alertDialog.create();
                     // 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
@@ -233,13 +231,13 @@ public class HistoryActivity extends AppCompatActivity {
                     tvOK.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            // 將數量字串設定回vendorArrayList
+                            // 取得輸入的EditText
+                            String modifyET = etMessage.getText().toString();
+                            // 將修改後的EditText修改回vendorArrayList
                             vendorArrayList.get(position).setQuantity(modifyET);
-                            // 刷新 ?
+                            // 刷新
                             notifyDataSetChanged();
 //                            notifyItemChanged(position);
-
                             Toast.makeText(HistoryActivity.this, "已修改~", Toast.LENGTH_SHORT).show();
                         // 客製化Dialog才會才會消失
                         dialog.dismiss();
