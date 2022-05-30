@@ -68,31 +68,6 @@ public class HistoryActivity extends AppCompatActivity {
         handleElement();
 
         /**
-         * Bundle來的資料
-         */
-//        vendorArrayList = new ArrayList<>();
-//        Vendor vendor = new Vendor();
-//        vendor.setBarcodenum(editableNumStr);
-//        vendor.setQuantity(editableQuantityStr);
-//        vendorArrayList.add(vendor);
-
-//        ArrayList<Vendor> vendorArrayList = new ArrayList<>();
-//        for (int i =111123456 ; i < 111123465 ; i++){
-//            Vendor vendor = new Vendor("AA" + i + "6","1");
-//            Vendor vendor2 = new Vendor("BB" + i + "5","2");
-//            Vendor vendor3 = new Vendor("CC" + i + "4","3");
-//            Vendor vendor4 = new Vendor("DD" + i + "3","4");
-//            Vendor vendor5 = new Vendor("EE" + i + "2","5");
-//            Vendor vendor6 = new Vendor("FF" + i + "1","6");
-//            vendorArrayList.add(vendor);
-//            vendorArrayList.add(vendor2);
-//            vendorArrayList.add(vendor3);
-//            vendorArrayList.add(vendor4);
-//            vendorArrayList.add(vendor5);
-//            vendorArrayList.add(vendor6);
-//    }
-
-        /**
          * Adapter
          */
         VendorAdapter vendorAdapter = new VendorAdapter(vendorArrayList);
@@ -124,7 +99,9 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
         /**
-         * 取得上一頁BoxingActivity供應商資料 (bundle) , 設置供應商名稱
+         * 取得上一頁Bundle資料
+         * BoxingActivity供應商資料,設置供應商名稱
+         * vendorArrayList號碼&數量資料
          */
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
@@ -225,11 +202,11 @@ public class HistoryActivity extends AppCompatActivity {
             holder.vendorquantity.setText(vendor.getQuantity());
 
             /**
-             * RecyclerView的item的點擊事件
+             * RecyclerView的item的長按點擊事件
              */
-            holder.cl_itemView.setOnClickListener(new View.OnClickListener() {
+            holder.cl_itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View v) {
 //                    Toast.makeText(v.getContext(), " " + holder.barcodeNum.getText(), Toast.LENGTH_SHORT).show();
                     /**
                      * AlertDialog
@@ -243,6 +220,10 @@ public class HistoryActivity extends AppCompatActivity {
                     alertDialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
+                            String quantity = vendorArrayList.get(position).getQuantity();
+                            vendorArrayList.get(position).setQuantity(quantity);
+
                             Toast.makeText(v.getContext(), "已修改數量", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -265,6 +246,12 @@ public class HistoryActivity extends AppCompatActivity {
                      * 一定要加這行才會出現彈窗 , 寫在該行後面的code 則不會執行 , 因為已經show出彈窗了
                      */
                     alertDialog.show();
+                    /**
+                     * 長按點擊事件回傳 true / false :
+                     * 如元件有設定一般和長按兩種點擊事件
+                     * true 則不會再執行 一般點擊事件 , 而false 則會繼續執行一般點擊事件
+                     */
+                    return false;
                 }
             });
 

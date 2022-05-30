@@ -100,8 +100,6 @@ public class BoxingActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
                 bundle.putParcelableArrayList("vendorArrayList",vendorArrayList);
-//                bundle.putString("editableNumStr", editableNumStr);
-//                bundle.putString("editableQuantityStr", editableQuantityStr);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -146,7 +144,7 @@ public class BoxingActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableNumStr = et_num.getText().toString();
-                    vendor = new Vendor();
+//                    vendor = new Vendor();
 //                    vendor.setBarcodenum(editableNumStr);
 //                    vendorArrayList.add(vendor);
                     return true;
@@ -167,7 +165,6 @@ public class BoxingActivity extends AppCompatActivity {
                     vendor.setBarcodenum(editableNumStr);
                     vendor.setQuantity(editableQuantityStr);
                     vendorArrayList.add(vendor);
-                    Toast.makeText(BoxingActivity.this, "vendorArrayList : " + vendorArrayList, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
