@@ -2,10 +2,12 @@ package com.example.test2.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -162,6 +164,12 @@ public class BoxingActivity extends AppCompatActivity {
                     vendor.setBarcodenum(editableNumStr);
                     vendor.setQuantity(editableQuantityStr);
                     vendorArrayList.add(vendor);
+
+                    // 隱藏鍵盤
+                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if(inputMethodManager.isActive()){
+                        inputMethodManager.hideSoftInputFromWindow(BoxingActivity.this.getCurrentFocus().getWindowToken(),0);
+                    }
                     return true;
                 }
                 return false;
