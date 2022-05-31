@@ -128,12 +128,13 @@ public class BoxingActivity extends AppCompatActivity {
         et_num.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                et_num.setHint("輸入英文&數字"); // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableNumStr = et_num.getText().toString();
                     Toast.makeText(BoxingActivity.this, "editableNumStr : " + editableNumStr, Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                return false;
+                return false; //回傳 false 表示到這邊結束，回傳 true 則會繼續原本 onKey 定義的動作。
             }
         });
 
@@ -144,6 +145,7 @@ public class BoxingActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                    et_quantity.setHint("輸入整數"); // 設定提示訊息
                     editableQuantityStr = et_quantity.getText().toString();
                     Toast.makeText(BoxingActivity.this, "editableQuantityStr : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
                     vendor = new Vendor();
@@ -157,7 +159,7 @@ public class BoxingActivity extends AppCompatActivity {
                     }
                     return true;
                 }
-                return false;
+                return false; //回傳 false 表示到這邊結束，回傳 true 則會繼續原本 onKey 定義的動作。
             }
         });
 
