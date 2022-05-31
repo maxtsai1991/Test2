@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -105,20 +106,6 @@ public class BoxingActivity extends AppCompatActivity {
         });
 
         /**
-         * Checkbox(手動/自動) 預設為自動(isChecked = false)
-         */
-        cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        /**
          * 列印 : 暫時先取得三種資料 : 供應商 號碼 數量
          */
         bt_print.setOnClickListener(new View.OnClickListener() {
@@ -136,16 +123,14 @@ public class BoxingActivity extends AppCompatActivity {
         tv_vendor_boxing.setText(vendorName);
 
         /**
-         *  et_num EditText號碼監聽事件
+         *  et_num EditText【號碼】監聽事件
          */
         et_num.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableNumStr = et_num.getText().toString();
-//                    vendor = new Vendor();
-//                    vendor.setBarcodenum(editableNumStr);
-//                    vendorArrayList.add(vendor);
+                    Toast.makeText(BoxingActivity.this, "editableNumStr : " + editableNumStr, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
@@ -153,18 +138,18 @@ public class BoxingActivity extends AppCompatActivity {
         });
 
         /**
-         *  et_quantity EditText數量監聽事件
+         *  et_quantity EditText【數量】監聽事件
          */
         et_quantity.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableQuantityStr = et_quantity.getText().toString();
+                    Toast.makeText(BoxingActivity.this, "editableQuantityStr : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
                     vendor = new Vendor();
                     vendor.setBarcodenum(editableNumStr);
                     vendor.setQuantity(editableQuantityStr);
                     vendorArrayList.add(vendor);
-
                     // 隱藏鍵盤
                     InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     if(inputMethodManager.isActive()){
@@ -173,6 +158,26 @@ public class BoxingActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        /**
+         * Checkbox(手動/自動) 預設為自動(isChecked = false)
+         */
+        cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String checkNum = et_num.getText().toString().trim();
+                String checkQuantity = et_quantity.getText().toString().trim();
+                if ( checkNum.equals("") && checkQuantity.equals("") ){
+                    Toast.makeText(BoxingActivity.this, " 號碼及數量不能為空,請輸入號碼及數量 ", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (isChecked){
+                        Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }

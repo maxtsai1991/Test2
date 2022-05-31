@@ -217,7 +217,7 @@ public class HistoryActivity extends AppCompatActivity {
                     TextView tvMessage = view.findViewById(R.id.tv_message_dialog);
                     EditText etMessage = view.findViewById(R.id.et_quantity_dialog1);
                     // AlertDialog訊息
-                    tvMessage.setText(" 是否確認修改 " + vendorArrayList.get(position).getBarcodenum() + " ?? ");
+                    tvMessage.setText(" 是否確認修改 " + "\n" + vendorArrayList.get(position).getBarcodenum() + " ?? ");
                     // AlertDialog EditText顯示數量
                     etMessage.setText(vendorArrayList.get(position).getQuantity());
                     // 創建AlertDialog
