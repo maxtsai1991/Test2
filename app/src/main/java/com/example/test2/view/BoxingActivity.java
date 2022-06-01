@@ -178,6 +178,27 @@ public class BoxingActivity extends AppCompatActivity {
                         Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
+                        String numStr = "";
+                        String quanStr = "";
+
+                        if(et_num.getText().toString().equals(vendor.getBarcodenum())){
+                            for (Vendor arrayList : vendorArrayList){
+                                numStr = arrayList.getBarcodenum();
+                                quanStr = arrayList.getQuantity();
+                            }
+                            if(numStr.equals(et_num.getText().toString())){
+                                int intQuan ;
+                                int intUserQuan;
+                                int sumQuan;
+                                String strSumQ;
+                                intQuan = Integer.parseInt(quanStr);
+                                intUserQuan = Integer.parseInt(et_quantity.getText().toString());
+                                sumQuan = intQuan + intUserQuan;
+                                strSumQ = Integer.toString(sumQuan);
+                                vendor.setQuantity(strSumQ);
+                                vendorArrayList.add(vendor);
+                            }
+                        }
                     }
                 }
             }
