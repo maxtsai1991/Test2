@@ -1,6 +1,8 @@
-//package com.example.test2;
+package com.example.test2;
 //
-//import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 //
 //import android.content.ContentValues;
 //import android.database.Cursor;
@@ -11,7 +13,6 @@
 //import android.widget.Button;
 //import android.widget.Toast;
 //
-////import com.regalscan.regalutilitylib.DBHelper;
 //
 //import com.regalscan.regalutilitylib.DBHelper;
 //
@@ -22,7 +23,7 @@
 //import static android.os.Environment.DIRECTORY_DOWNLOADS;
 //
 //
-//public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 //    private static final String TAG = "MainActivity";
 //    DBHelper dbHelper;
 //    private final String DB_NAME = "Testdb.db";
@@ -30,17 +31,17 @@
 //    private String PROJECTION = " ";
 //    Button bt_add,bt_del,bt_change,bt_select;
 //
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 //
 //        findViews();
 //        buttonFunction();
 //
 //        dbHelper = new DBHelper(getContentResolver(),"/storage/emulated/0/Download",DB_NAME);
 //
-//    }
+    }
 //
 //    private void findViews() {
 //        bt_add = findViewById(R.id.bt_add);
@@ -144,4 +145,4 @@
 //        }
 //
 //    }
-//}
+}
