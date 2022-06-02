@@ -128,10 +128,10 @@ public class BoxingActivity extends AppCompatActivity {
         et_num.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                et_num.setHint("輸入英文&數字"); // 設定提示訊息
+                    et_num.setHint("輸入英文&數字");                   // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    editableNumStr = et_num.getText().toString();
-                    Toast.makeText(BoxingActivity.this, "editableNumStr : " + editableNumStr, Toast.LENGTH_SHORT).show();
+                    editableNumStr = et_num.getText().toString();     // 號碼ET轉字串
+                    Toast.makeText(BoxingActivity.this, "輸入的號碼 : " + editableNumStr, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false; //回傳 false 表示到這邊結束，回傳 true 則會繼續原本 onKey 定義的動作。
@@ -144,15 +144,23 @@ public class BoxingActivity extends AppCompatActivity {
         et_quantity.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    et_quantity.setHint("輸入整數");                         // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    et_quantity.setHint("輸入整數"); // 設定提示訊息
-                    editableQuantityStr = et_quantity.getText().toString();
-                    Toast.makeText(BoxingActivity.this, "editableQuantityStr : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
+                    editableQuantityStr = et_quantity.getText().toString(); // 數量ET轉字串
+                    Toast.makeText(BoxingActivity.this, "輸入的數量 : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
                     vendor = new Vendor();
+                    /**
+                     * 輸入的號碼&數量設回JavaBean
+                     */
                     vendor.setBarcodenum(editableNumStr);
                     vendor.setQuantity(editableQuantityStr);
+                    /**
+                     * JavaBean 給 ArrayList
+                     */
                     vendorArrayList.add(vendor);
-                    // 隱藏鍵盤
+                    /**
+                     * 隱藏鍵盤
+                     */
                     InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     if(inputMethodManager.isActive()){
                         inputMethodManager.hideSoftInputFromWindow(BoxingActivity.this.getCurrentFocus().getWindowToken(),0);
@@ -178,27 +186,6 @@ public class BoxingActivity extends AppCompatActivity {
                         Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
-                        String numStr = "";
-                        String quanStr = "";
-
-                        if(et_num.getText().toString().equals(vendor.getBarcodenum())){
-                            for (Vendor arrayList : vendorArrayList){
-                                numStr = arrayList.getBarcodenum();
-                                quanStr = arrayList.getQuantity();
-                            }
-                            if(numStr.equals(et_num.getText().toString())){
-                                int intQuan ;
-                                int intUserQuan;
-                                int sumQuan;
-                                String strSumQ;
-                                intQuan = Integer.parseInt(quanStr);
-                                intUserQuan = Integer.parseInt(et_quantity.getText().toString());
-                                sumQuan = intQuan + intUserQuan;
-                                strSumQ = Integer.toString(sumQuan);
-                                vendor.setQuantity(strSumQ);
-                                vendorArrayList.add(vendor);
-                            }
-                        }
                     }
                 }
             }
