@@ -17,10 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.test2.JavaBean;
 import com.example.test2.R;
 import com.example.test2.Vendor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BoxingActivity extends AppCompatActivity {
     /**
@@ -45,11 +49,17 @@ public class BoxingActivity extends AppCompatActivity {
     private Button bt_print;
     private String vendorName = "帝商";
 
-    private ArrayList<Vendor> vendorArrayList;
-    private Vendor vendor;
+    // 新增Start
+    private ArrayList<Vendor> vendorList;
+    private Vendor vendor ;
+    private String inputNumStr;
+    private String inputQTY;
+    // 新增End
 
-    private String editableNumStr;
-    private String editableQuantityStr;
+//    private ArrayList<Vendor> vendorArrayList;
+//    private Vendor vendor;
+//    private String editableNumStr;
+//    private String editableQuantityStr;
 
     public BoxingActivity() {
     }
@@ -60,9 +70,13 @@ public class BoxingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_boxing);
         findViews();
         handleElement();
-
-        vendorArrayList = new ArrayList<>();
+//        vendorArrayList = new ArrayList<>();
+//        vendor = new Vendor();
+        // 新增Start
+        vendorList = new ArrayList<>();
         vendor = new Vendor();
+        // 新增End
+
     }
 
     /**
@@ -99,7 +113,10 @@ public class BoxingActivity extends AppCompatActivity {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
-                bundle.putParcelableArrayList("vendorArrayList",vendorArrayList);
+//                bundle.putParcelableArrayList("vendorArrayList",vendorArrayList);
+                // 新增Start
+                bundle.putParcelableArrayList("vendorList",vendorList);
+                // 新增End
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -130,9 +147,13 @@ public class BoxingActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                     et_num.setHint("輸入英文&數字");                   // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    editableNumStr = et_num.getText().toString();     // 號碼ET轉字串
-                    Log.d("TAG", "號碼字串 : " + editableNumStr + "  vendor號碼 : " + vendor.getBarcodenum());
-                    Toast.makeText(BoxingActivity.this, "輸入的號碼 : " + editableNumStr, Toast.LENGTH_SHORT).show();
+//                    editableNumStr = et_num.getText().toString();     // 號碼ET轉字串
+//                    Log.d("TAG", "號碼字串 : " + editableNumStr + "  vendor號碼 : " + vendor.getBarcodenum());
+//                    Toast.makeText(BoxingActivity.this, "輸入的號碼 : " + editableNumStr, Toast.LENGTH_SHORT).show();
+                    // 新增Start
+                    inputNumStr = et_num.getText().toString();
+                    Log.d("debug", "輸入的號碼 : " + inputNumStr + " , 取vendor號碼 : " + vendor.getBarcodenum() );
+                    // 新增End
                     return true;
                 }
                 return false; //回傳 false 表示到這邊結束，回傳 true 則會繼續原本 onKey 定義的動作。
@@ -147,20 +168,41 @@ public class BoxingActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                     et_quantity.setHint("輸入整數");                         // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    editableQuantityStr = et_quantity.getText().toString(); // 數量ET轉字串
-                    Log.d("TAG", "數量字串 : " + editableQuantityStr + "  vendor數量 : " + vendor.getQuantity());
-                    Toast.makeText(BoxingActivity.this, "輸入的數量 : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
+//                    editableQuantityStr = et_quantity.getText().toString(); // 數量ET轉字串
+//                    Log.d("TAG", "數量字串 : " + editableQuantityStr + "  vendor數量 : " + vendor.getQuantity());
+//                    Toast.makeText(BoxingActivity.this, "輸入的數量 : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
+//                    vendor = new Vendor();
+//                    /**
+//                     * 輸入的號碼&數量設回JavaBean
+//                     */
+//                    vendor.setBarcodenum(editableNumStr);
+//                    vendor.setQuantity(editableQuantityStr);
+//                    Log.d("TAG", " vendor號碼 : " + vendor.getBarcodenum() + " , vendor數量 : " + vendor.getQuantity() );
+//                    /**
+//                     * JavaBean 給 ArrayList
+//                     */
+//                    vendorArrayList.add(vendor);
+                    // 新增Start
+                    inputQTY = et_quantity.getText().toString();
                     vendor = new Vendor();
-                    /**
-                     * 輸入的號碼&數量設回JavaBean
-                     */
-                    vendor.setBarcodenum(editableNumStr);
-                    vendor.setQuantity(editableQuantityStr);
-                    Log.d("TAG", " vendor號碼 : " + vendor.getBarcodenum() + " , vendor數量 : " + vendor.getQuantity() );
-                    /**
-                     * JavaBean 給 ArrayList
-                     */
-                    vendorArrayList.add(vendor);
+                    vendor.setBarcodenum(inputNumStr);
+                    vendor.setQuantity(inputQTY);
+                    vendorList.add(vendor);
+                    Log.d("debug", "輸入的數量 : " + inputQTY + " , 取vendor數量 : " + vendor.getQuantity() );
+
+                    Map<String, Vendor> map = new HashMap<>();
+                    for(Vendor vendor : vendorList){
+                        if(map.containsKey(vendor.getBarcodenum())){
+                            Vendor oldVendor = map.get(vendor.getBarcodenum());
+                            int sumQTY = Integer.parseInt(oldVendor.getQuantity()) + Integer.parseInt(vendor.getQuantity());
+                            String sumQTYStr = String.valueOf(sumQTY);
+                            oldVendor.setQuantity(sumQTYStr);
+                        }else {
+                            map.put(vendor.getBarcodenum(), new Vendor(vendor.getBarcodenum(),vendor.getQuantity()));
+                        }
+                    }
+                    // 新增End
+
                     /**
                      * 隱藏鍵盤
                      */

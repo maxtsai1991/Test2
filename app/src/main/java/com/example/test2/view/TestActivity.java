@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * from 小黑學長範例
+ */
+
 public class TestActivity extends AppCompatActivity {
     private List<JavaBean> javaBeanList = new ArrayList<>();
     @Override

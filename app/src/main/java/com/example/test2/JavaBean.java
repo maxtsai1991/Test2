@@ -1,5 +1,9 @@
 package com.example.test2;
 
+
+/**
+ * from 小黑學長範例
+ */
 public class JavaBean {
 
     int number;
