@@ -197,6 +197,7 @@ public class BoxingActivity extends AppCompatActivity {
                             int sumQTY = Integer.parseInt(oldVendor.getQuantity()) + Integer.parseInt(vendor.getQuantity());
                             String sumQTYStr = String.valueOf(sumQTY);
                             oldVendor.setQuantity(sumQTYStr);
+                            vendorList.add(oldVendor);
                         }else {
                             map.put(vendor.getBarcodenum(), new Vendor(vendor.getBarcodenum(),vendor.getQuantity()));
                         }
