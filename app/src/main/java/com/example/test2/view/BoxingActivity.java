@@ -131,6 +131,7 @@ public class BoxingActivity extends AppCompatActivity {
                     et_num.setHint("輸入英文&數字");                   // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableNumStr = et_num.getText().toString();     // 號碼ET轉字串
+                    Log.d("TAG", "號碼字串 : " + editableNumStr + "  vendor號碼 : " + vendor.getBarcodenum());
                     Toast.makeText(BoxingActivity.this, "輸入的號碼 : " + editableNumStr, Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -147,6 +148,7 @@ public class BoxingActivity extends AppCompatActivity {
                     et_quantity.setHint("輸入整數");                         // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     editableQuantityStr = et_quantity.getText().toString(); // 數量ET轉字串
+                    Log.d("TAG", "數量字串 : " + editableQuantityStr + "  vendor數量 : " + vendor.getQuantity());
                     Toast.makeText(BoxingActivity.this, "輸入的數量 : " + editableQuantityStr, Toast.LENGTH_SHORT).show();
                     vendor = new Vendor();
                     /**
@@ -154,6 +156,7 @@ public class BoxingActivity extends AppCompatActivity {
                      */
                     vendor.setBarcodenum(editableNumStr);
                     vendor.setQuantity(editableQuantityStr);
+                    Log.d("TAG", " vendor號碼 : " + vendor.getBarcodenum() + " , vendor數量 : " + vendor.getQuantity() );
                     /**
                      * JavaBean 給 ArrayList
                      */
