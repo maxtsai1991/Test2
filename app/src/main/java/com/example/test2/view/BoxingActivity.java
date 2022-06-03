@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +27,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BoxingActivity extends AppCompatActivity {
+    /**
+     * DB欄位
+     */
+//    private DBHelper dbHelper;
+//    private final String DB_NAME = "Host.db3";
+//    private String TABLE_NAME = "Settings";
+//    private String PRINT_QTY ;   // 列印數量
+//    private String VENDOR_NO ;   // 供應商代碼
+//    private String VENDOR_NAME ; // 供應商名稱
+
     /**
      * 返回主選單 , 進入裝箱作業-工作歷程(歷程記錄)
      */
@@ -69,6 +80,7 @@ public class BoxingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_boxing);
         findViews();
         handleElement();
+        dbLiteApply();
 
         /**
          * ArrayList & Vendor (JavaBean) 初始化
@@ -76,6 +88,33 @@ public class BoxingActivity extends AppCompatActivity {
         vendorList = new ArrayList<>();
         vendor = new Vendor();
 
+//        dbHelper = new DBHelper(getContentResolver(),"/storage/emulated/0/Download",DB_NAME);
+    }
+
+    private void dbLiteApply() {
+     /**
+      * Select : 查
+      */
+//        try {
+//            Cursor cursor1 = dbHelper.query("SELECT * FROM ASSETS");
+//            if (cursor1 != null && cursor1.getCount() >= 0) {
+//                while (cursor1.moveToNext()) {
+//                    PRINT_QTY = cursor1.getString(cursor1.getColumnIndexOrThrow("PRINT_QTY"));
+//                    VENDOR_NO = cursor1.getString(cursor1.getColumnIndexOrThrow("VENDOR_NO"));
+//                    VENDOR_NAME = cursor1.getString(cursor1.getColumnIndexOrThrow("VENDOR_NAME"));
+//
+//                    Log.d("debug", "PRINT_QTY: " + PRINT_QTY + " ,VENDOR_NO: " + VENDOR_NO + " ,VENDOR_NAME: " + VENDOR_NAME);
+//
+//                    String select = "PRINT_QTY=" + PRINT_QTY + "\r\n" + "VENDOR_NO=" + VENDOR_NO + "\r\n" + "VENDOR_NAME=" + VENDOR_NAME;
+//                    Log.d("debug", "select: " + select );
+//
+//                    dbHelper.close();
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
