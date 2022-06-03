@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,13 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.test2.JavaBean;
 import com.example.test2.R;
 import com.example.test2.Vendor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BoxingActivity extends AppCompatActivity {
@@ -49,17 +48,17 @@ public class BoxingActivity extends AppCompatActivity {
     private Button bt_print;
     private String vendorName = "帝商";
 
-    // 新增Start
     private ArrayList<Vendor> vendorList;
     private Vendor vendor ;
+    /**
+     * EditText輸入[號碼]轉字串
+     */
     private String inputNumStr;
-    private String inputQTY;
-    // 新增End
+    /**
+     * EditText輸入[數量]轉字串
+     */
+    private String inputQTYStr;
 
-//    private ArrayList<Vendor> vendorArrayList;
-//    private Vendor vendor;
-//    private String editableNumStr;
-//    private String editableQuantityStr;
 
     public BoxingActivity() {
     }
@@ -70,12 +69,12 @@ public class BoxingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_boxing);
         findViews();
         handleElement();
-//        vendorArrayList = new ArrayList<>();
-//        vendor = new Vendor();
-        // 新增Start
+
+        /**
+         * ArrayList & Vendor (JavaBean) 初始化
+         */
         vendorList = new ArrayList<>();
         vendor = new Vendor();
-        // 新增End
 
     }
 
@@ -105,18 +104,18 @@ public class BoxingActivity extends AppCompatActivity {
     private void handleElement() {
 
         /**
-         * 跳轉下一頁(歷程記錄) , Bundle供應商名稱
+         * 跳轉下一頁(歷程記錄)
          */
         iv_to_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BoxingActivity.this, HistoryActivity.class);
+                /**
+                 * Bundle 將資料帶到下一頁 歷程記錄
+                 */
                 Bundle bundle = new Bundle();
                 bundle.putString("vendorname", vendorName);
-//                bundle.putParcelableArrayList("vendorArrayList",vendorArrayList);
-                // 新增Start
                 bundle.putParcelableArrayList("vendorList",vendorList);
-                // 新增End
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -147,7 +146,7 @@ public class BoxingActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                     et_num.setHint("輸入英文&數字");                   // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    inputNumStr = et_num.getText().toString();
+                    inputNumStr = et_num.getText().toString().trim();       // EditText輸入[號碼]轉字串
                     Log.d("debug", "輸入的號碼 : " + inputNumStr);
                     return true;
                 }
@@ -163,10 +162,13 @@ public class BoxingActivity extends AppCompatActivity {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                     et_quantity.setHint("輸入整數");                         // 設定提示訊息
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                    inputQTYStr = et_quantity.getText().toString().trim();            // EditText輸入[數量]轉字串
+                    Log.d("debug", "輸入的數量 : " + inputQTYStr);
 
-                    inputQTY = et_quantity.getText().toString();
-                    Log.d("debug", "輸入的數量 : " + inputQTY);
-                    judgeNum(inputNumStr,inputQTY);
+                    /**
+                     * 判斷是否同號碼
+                     */
+                    judgeNum(inputNumStr, inputQTYStr);
 
                     /**
                      * 隱藏鍵盤
@@ -187,9 +189,8 @@ public class BoxingActivity extends AppCompatActivity {
         cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String checkNum = et_num.getText().toString().trim();
-                String checkQuantity = et_quantity.getText().toString().trim();
-                if ( checkNum.equals("") && checkQuantity.equals("") ){
+                // 判斷兩欄位是否為空值
+                if (TextUtils.isEmpty(inputNumStr) && TextUtils.isEmpty(inputQTYStr)){
                     Toast.makeText(BoxingActivity.this, " 號碼及數量不能為空,請輸入號碼及數量 ", Toast.LENGTH_SHORT).show();
                 }else {
                     if (isChecked){
@@ -206,23 +207,61 @@ public class BoxingActivity extends AppCompatActivity {
      * 判斷是否同號碼
      */
     public ArrayList<Vendor> judgeNum(String inputNumStr, String inputQTY){
+        /**
+         * 初始化Vendor
+         */
         vendor = new Vendor();
-
+        /**
+         * 設定[號碼] 到vendor
+         */
         vendor.setBarcodenum(inputNumStr);
         Log.d("debug",  " 取vendor號碼 : " + vendor.getBarcodenum() );
+        /**
+         * 設定[數量] 到vendor
+         */
         vendor.setQuantity(inputQTY);
         Log.d("debug",  " 取vendor數量 : " + vendor.getQuantity() );
+        /**
+         * vendor 放進 ArrayList<Vendor>
+         */
         vendorList.add(vendor);
 
+        /**
+         * HashMap初始化 , Key放String , Value放vendor的號碼及數量
+         */
         Map<String, Vendor> map = new HashMap<>();
+        /**
+         * 遍歷vendorList
+         */
         for(Vendor vendor : vendorList){
+            /**
+             * if判斷 : 取vendor的號碼 並和 map 比對
+             */
             if(map.containsKey(vendor.getBarcodenum())){
+                /**
+                 * 取map裡面的vendor號碼 , 放進oldVendor(型態Vendor)
+                 */
                 Vendor oldVendor = map.get(vendor.getBarcodenum());
+                /**
+                 * oldVendor號碼 相加 vendor的數量 並轉型成int 放入sumQTY
+                 */
                 int sumQTY = Integer.parseInt(oldVendor.getQuantity()) + Integer.parseInt(vendor.getQuantity());
+                /**
+                 * int的sumQTY 轉回 String
+                 */
                 String sumQTYStr = String.valueOf(sumQTY);
+                /**
+                 * 將sumQTYStr設定給oldVendor的數量
+                 */
                 oldVendor.setQuantity(sumQTYStr);
+                /**
+                 * oldVendor放回vendorList
+                 */
                 vendorList.add(oldVendor);
             }else {
+                /**
+                 * map放入 ( vendor號碼 , 新的Vendor(vendor號碼,vendor數量) )
+                 */
                 map.put(vendor.getBarcodenum(), new Vendor(vendor.getBarcodenum(),vendor.getQuantity()));
             }
         }

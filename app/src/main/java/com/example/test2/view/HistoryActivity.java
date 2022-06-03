@@ -106,11 +106,9 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent1 = getIntent();
         Bundle bundle = intent1.getExtras();
 
-//        ArrayList arrayList = bundle.getParcelableArrayList("vendorArrayList");
-        // 新增Start
         ArrayList arrayList = bundle.getParcelableArrayList("vendorList");
         vendorArrayList = (ArrayList<Vendor>) arrayList;
-        // 新增End
+
         vendorName = bundle.getString("vendorname");
         tv_vendor_name_history.setText(vendorName);
     }
@@ -316,10 +314,7 @@ public class HistoryActivity extends AppCompatActivity {
          */
         @Override
         public int getItemCount() {
-//            return vendorArrayList.size();
-            // 新增Start
             return vendorArrayList.size();
-            // 新增End
         }
     }
 
