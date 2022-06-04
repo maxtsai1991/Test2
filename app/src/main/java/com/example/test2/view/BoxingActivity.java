@@ -25,6 +25,7 @@ import com.example.test2.Vendor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class BoxingActivity extends AppCompatActivity {
     /**
@@ -79,7 +80,13 @@ public class BoxingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boxing);
         findViews();
+        /**
+         * 元件處理
+         */
         handleElement();
+        /**
+         * DB應用
+         */
         dbLiteApply();
 
         /**
@@ -236,6 +243,7 @@ public class BoxingActivity extends AppCompatActivity {
                         Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
+                        judgeNum(inputNumStr,inputQTYStr);
                     }
                 }
             }
@@ -272,38 +280,46 @@ public class BoxingActivity extends AppCompatActivity {
         /**
          * 遍歷vendorList
          */
-        for(Vendor vendor : vendorList){
-            /**
-             * if判斷 : 取vendor的號碼 並和 map 比對
-             */
-            if(map.containsKey(vendor.getBarcodenum())){
+        try {
+            for(Vendor vendor : vendorList){
                 /**
-                 * 取map裡面的vendor號碼 , 放進oldVendor(型態Vendor)
+                 * if判斷 : 取vendor的號碼 並和 map 比對
                  */
-                Vendor oldVendor = map.get(vendor.getBarcodenum());
-                /**
-                 * oldVendor號碼 相加 vendor的數量 並轉型成int 放入sumQTY
-                 */
-                int sumQTY = Integer.parseInt(oldVendor.getQuantity()) + Integer.parseInt(vendor.getQuantity());
-                /**
-                 * int的sumQTY 轉回 String
-                 */
-                String sumQTYStr = String.valueOf(sumQTY);
-                /**
-                 * 將sumQTYStr設定給oldVendor的數量
-                 */
-                oldVendor.setQuantity(sumQTYStr);
-                /**
-                 * oldVendor放回vendorList
-                 */
-                vendorList.add(oldVendor);
-            }else {
-                /**
-                 * map放入 ( vendor號碼 , 新的Vendor(vendor號碼,vendor數量) )
-                 */
-                map.put(vendor.getBarcodenum(), new Vendor(vendor.getBarcodenum(),vendor.getQuantity()));
+                if(map.containsKey(vendor.getBarcodenum())){
+                    /**
+                     * 取map裡面的vendor號碼 , 放進oldVendor(型態Vendor)
+                     */
+                    Vendor oldVendor = map.get(vendor.getBarcodenum());
+                    /**
+                     * oldVendor號碼 相加 vendor的數量 並轉型成int 放入sumQTY
+                     */
+                    int sumQTY = Integer.parseInt(oldVendor.getQuantity()) + Integer.parseInt(vendor.getQuantity());
+                    /**
+                     * int的sumQTY 轉回 String
+                     */
+                    String sumQTYStr = String.valueOf(sumQTY);
+                    /**
+                     * 將sumQTYStr設定給oldVendor的數量
+                     */
+                    oldVendor.setQuantity(sumQTYStr);
+                    /**
+                     * oldVendor放回vendorList
+                     */
+                    int lastIdx = vendorList.size() -1;
+                    Vendor lastElement = vendorList.get(lastIdx);
+                    vendorList.remove(lastElement);
+                    vendorList.add(oldVendor);
+                }else {
+                    /**
+                     * map放入 ( vendor號碼 , 新的Vendor(vendor號碼,vendor數量) )
+                     */
+                    map.put(vendor.getBarcodenum(), new Vendor(vendor.getBarcodenum(),vendor.getQuantity()));
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         return vendorList;
     }
 
