@@ -69,6 +69,8 @@ public class BoxingActivity extends AppCompatActivity {
      */
     private String inputQTYStr;
 
+    private Boolean flag = false;
+
 
     public BoxingActivity() {
     }
@@ -209,10 +211,14 @@ public class BoxingActivity extends AppCompatActivity {
                     inputQTYStr = et_quantity.getText().toString().trim();            // EditText輸入[數量]轉字串
                     Log.d("debug", "輸入的數量 : " + inputQTYStr);
 
-                    /**
-                     * 判斷是否同號碼
-                     */
-                    autoModeNumJudge(inputNumStr, inputQTYStr);
+                    if(flag){
+                        /**
+                         * 判斷是否同號碼,同號碼則將數量累加 (自動模式)
+                         */
+                         autoModeNumJudge(inputNumStr, inputQTYStr);
+                    }else {
+                         manualModel(inputNumStr,inputQTYStr);
+                    }
 
                     /**
                      * 隱藏鍵盤
@@ -233,18 +239,20 @@ public class BoxingActivity extends AppCompatActivity {
         cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // 判斷兩欄位是否為空值
-                if (TextUtils.isEmpty(inputNumStr) && TextUtils.isEmpty(inputQTYStr)){
-                    Toast.makeText(BoxingActivity.this, " 號碼及數量不能為空,請輸入號碼及數量 ", Toast.LENGTH_SHORT).show();
-                }else {
+//                // 判斷兩欄位是否為空值
+//                if (TextUtils.isEmpty(inputNumStr) && TextUtils.isEmpty(inputQTYStr)){
+//                    Toast.makeText(BoxingActivity.this, " 號碼及數量不能為空,請輸入號碼及數量 ", Toast.LENGTH_SHORT).show();
+//                }else {
                     if (isChecked){
                         Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
-                        manualModel(inputNumStr,inputQTYStr);
+                        flag = false;
+//                        manualModel(inputNumStr,inputQTYStr);
                     }else {
                         Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
-                        autoModeNumJudge(inputNumStr,inputQTYStr);
+                        flag = true;
+//                        autoModeNumJudge(inputNumStr,inputQTYStr);
                     }
-                }
+//                }
             }
         });
     }
