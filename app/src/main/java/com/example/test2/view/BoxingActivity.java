@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.example.test2.Vendor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 public class BoxingActivity extends AppCompatActivity {
     /**
@@ -214,7 +212,7 @@ public class BoxingActivity extends AppCompatActivity {
                     /**
                      * 判斷是否同號碼
                      */
-                    judgeNum(inputNumStr, inputQTYStr);
+                    autoModeNumJudge(inputNumStr, inputQTYStr);
 
                     /**
                      * 隱藏鍵盤
@@ -230,7 +228,7 @@ public class BoxingActivity extends AppCompatActivity {
         });
 
         /**
-         * Checkbox(手動/自動) 預設為自動(isChecked = false)
+         * Checkbox(手動/自動) 自動(isChecked = false)
          */
         cb_no_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -241,9 +239,10 @@ public class BoxingActivity extends AppCompatActivity {
                 }else {
                     if (isChecked){
                         Toast.makeText(BoxingActivity.this, " 【手動】 ", Toast.LENGTH_SHORT).show();
+                        manualModel(inputNumStr,inputQTYStr);
                     }else {
                         Toast.makeText(BoxingActivity.this, " 【自動】 ", Toast.LENGTH_SHORT).show();
-                        judgeNum(inputNumStr,inputQTYStr);
+                        autoModeNumJudge(inputNumStr,inputQTYStr);
                     }
                 }
             }
@@ -251,9 +250,9 @@ public class BoxingActivity extends AppCompatActivity {
     }
 
     /**
-     * 判斷是否同號碼
+     * 判斷是否同號碼,同號碼則將數量累加 (自動模式)
      */
-    public ArrayList<Vendor> judgeNum(String inputNumStr, String inputQTY){
+    public ArrayList<Vendor> autoModeNumJudge(String inputNumStr, String inputQTYStr){
         /**
          * 初始化Vendor
          */
@@ -266,7 +265,7 @@ public class BoxingActivity extends AppCompatActivity {
         /**
          * 設定[數量] 到vendor
          */
-        vendor.setQuantity(inputQTY);
+        vendor.setQuantity(inputQTYStr);
         Log.d("debug",  " 取vendor數量 : " + vendor.getQuantity() );
         /**
          * vendor 放進 ArrayList<Vendor>
@@ -320,6 +319,31 @@ public class BoxingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        return vendorList;
+    }
+
+    /**
+     * 手動模式
+     */
+    public ArrayList<Vendor> manualModel(String inputNumStr, String inputQTYStr){
+        /**
+         * 初始化Vendor
+         */
+        vendor = new Vendor();
+        /**
+         * 設定[號碼] 到vendor
+         */
+        vendor.setBarcodenum(inputNumStr);
+        Log.d("debug",  " 取vendor號碼 : " + vendor.getBarcodenum() );
+        /**
+         * 設定[數量] 到vendor
+         */
+        vendor.setQuantity(inputQTYStr);
+        Log.d("debug",  " 取vendor數量 : " + vendor.getQuantity() );
+        /**
+         * vendor 放進 ArrayList<Vendor>
+         */
+        vendorList.add(vendor);
         return vendorList;
     }
 
