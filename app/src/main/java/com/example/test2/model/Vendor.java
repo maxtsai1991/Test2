@@ -1,9 +1,7 @@
-package com.example.test2;
+package com.example.test2.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class Vendor implements Parcelable {
     private String barcodenum; // 條碼
