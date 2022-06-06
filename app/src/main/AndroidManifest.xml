@@ -9,8 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Test2">
-        <activity android:name=".view.TestActivity">
-        </activity>
         <activity android:name=".view.HistoryActivity"></activity>
         <activity android:name=".view.BoxingActivity">
             <intent-filter>
@@ -19,7 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
