@@ -216,9 +216,9 @@ public class BoxingActivity extends AppCompatActivity {
                         /**
                          * 判斷是否同號碼,同號碼則將數量累加 (自動模式)
                          */
-                         autoModeNumJudge(inputNumStr, inputQTYStr);
+                         autoMode(inputNumStr, inputQTYStr);
                     }else {
-                         manualModel(inputNumStr,inputQTYStr);
+                         manualMode(inputNumStr,inputQTYStr);
                     }
 
                     /**
@@ -258,6 +258,18 @@ public class BoxingActivity extends AppCompatActivity {
         });
     }
 
+    // todo 未完成
+    public ArrayList<Vendor> autoMode(String inputNumStr, String inputQTYStr){
+        int count = Integer.parseInt(inputQTYStr);
+//        int count = 0;
+        Vendor vendors = new Vendor();
+        vendors.setBarcodenum(inputNumStr);
+        vendors.setQuantity(String.valueOf(++count));
+        vendorList.add(vendors);
+
+        return vendorList;
+    }
+
     /**
      * 判斷是否同號碼,同號碼則將數量累加 (自動模式)
      */
@@ -280,7 +292,6 @@ public class BoxingActivity extends AppCompatActivity {
          * vendor 放進 ArrayList<Vendor>
          */
         vendorList.add(vendor);
-
         /**
          * HashMap初始化 , Key放String , Value放vendor的號碼及數量
          */
@@ -327,14 +338,13 @@ public class BoxingActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         return vendorList;
     }
 
     /**
      * 手動模式
      */
-    public ArrayList<Vendor> manualModel(String inputNumStr, String inputQTYStr){
+    public ArrayList<Vendor> manualMode(String inputNumStr, String inputQTYStr){
         /**
          * 初始化Vendor
          */
